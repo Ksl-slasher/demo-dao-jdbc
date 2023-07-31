@@ -28,7 +28,8 @@ public class SellerDaoJDBC implements SellerDao {
 	public void insert(Seller obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("INSERT INTO seller " + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+			st = conn.prepareStatement("INSERT INTO seller " 
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
 					+ "VALUES " + "(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getName());
@@ -88,7 +89,21 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?" );
+			
+			st.setInt(1, id);
+			
+			st.executeUpdate();
+			
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
